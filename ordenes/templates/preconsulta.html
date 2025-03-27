@@ -1,0 +1,135 @@
+{% extends "base.html" %}
+{% block content %}
+
+
+<div class="card-body">
+  <form class="card-body" method="POST">
+    {% csrf_token %}
+    <div class="label-input">
+      <p>
+        <label for="id_empleado" class="titulo">EMPLEADO:</label>
+        <input type="text" placeholder="Buscar..." list="buscar" name="buscarempleado" maxlength="30" required="True"
+          class="form-control" style="width:100px" />
+        <datalist id="buscar">
+          {% for empleado in empleados %}
+          <option value="{{ empleado.id }}">{{ empleado.nombre }} {{ empleado.legajo }} {{ empleado.dni }} {{ empleado.autorizado }} {{ empleado.dniautorizado }} {{ empleado.autorizado2 }} {{ empleado.dniautorizado2 }}</option>
+          {% endfor %}
+        </datalist>
+      </p>
+      {% if not user.comercio %}
+      <p>
+        <label for="id_comercio" class="titulo">COMERCIO:</label>
+        <input type="text" placeholder="Buscar..." list="buscar2" name="buscarcomercio" maxlength="30" required="True"
+          class="form-control" style="width:100px" />
+        <datalist id="buscar2">
+          {% for comercio in comercios %}
+          <option value="{{ comercio.id }}" class="p-3 mb-2 bg-info text-dark">{{ comercio.comercio }} {{comercio.titular }}</option>
+          {% endfor %}
+        </datalist>
+      </p>
+      {% endif %}
+    </div>
+    <div class="label-input">
+      <input type="submit" value="Buscar" class="btn btn-success" style="height: 40px;" />
+    </div>
+      {% if empleado.activo and datoscorrectos %}
+        <table class="table table-primary">
+          <thead>
+            <tr>
+              <th class="text-center" scope="col">NOMBRE</th>
+              <th class="text-center" scope="col">LEGAJO</th>
+              <th class="text-center" scope="col">DNI</th>
+              <th class="text-center" scope="col">LIMITE</th>
+              <th class="text-center" scope="col">DISPONIBLE</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tbody>
+              <tr>
+                  <td class="text-center">{{ empleado.nombre }}</td>
+                  <td class="text-center">{{ empleado.legajo }}</td>
+                  <td class="text-center">{{ empleado.dni }}</td>
+                  <td class="text-center">{{ limite }}</td>
+                  <td class="text-center">{{ margen }}</td>
+              <tr>
+            </tbody>
+            <tr>
+              <td colspan="7">
+                <div class="table-responsive">
+                  <table class="table table-bordered table-sm">
+                    <thead class="table-light">
+                      <tr>
+                        <th class="text-center" scope="col">AUTORIZADO 1</th>
+                        <th class="text-center" scope="col">DNI 1</th>
+                        <th class="text-center" scope="col">AUTORIZADO 2</th>
+                        <th class="text-center" scope="col">DNI 2</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td class="text-center">{{ empleado.autorizado|default:"-" }}</td>
+                        <td class="text-center">{{ empleado.dniautorizado|default:"-" }}</td>
+                        <td class="text-center">{{ empleado.autorizado2|default:"-" }}</td>
+                        <td class="text-center">{{ empleado.dniautorizado2|default:"-" }}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </td>
+            </tr>
+          
+          
+        </table>
+      {% else %}
+        {% if datoscorrectos %}
+          <div class="text-center alert alert-danger alert-dismissible fade show" role="alert">
+            No se puede emitir orden de compra a un empleado inactivo !!
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div>
+        {% endif %}
+      {% endif %}
+
+      {% if comercio.activo %}
+        <table class="table table-primary">  
+          <thead>
+            <tr>
+              <th class="text-center"  scope="col">COMERCIO</th>
+              <th class="text-center" scope="col">TITULAR</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="text-center">{{ comercio.comercio }}</td>
+              <td class="text-center">{{ comercio.titular }}</td>
+            <tr>
+          </tbody>
+        </table>
+      {% else %}
+        {% if datoscorrectos %}
+          <div class="text-center alert alert-danger alert-dismissible fade show" role="alert">
+            No se puede emitir orden de compra a un comercio inactivo !!
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div>
+        {% endif %}  
+      {% endif %}
+      {% if error %}
+          <div class="text-center alert alert-danger alert-dismissible fade show" role="alert">
+            Ups {{ user.username | upper }}  !! {{ mensajeerror }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div>
+        {% endif %}
+      <div class="label-input">
+        {% if empleado.activo and comercio.activo %}
+                <a href="{% url 'ordenes:create_orden'  empleado.id comercio.id margen %}" class="btn btn-success">Emitir Nueva
+                  Orden de Compra</a>
+                <br>
+        {% endif %}
+      </div>
+  </form>
+  <div class="label-input">
+    <a href="{% url 'ordenes:orden_all' %}" class="btn btn-danger">Volver</a>
+  </div>
+</div>
+
+
+{% endblock %}

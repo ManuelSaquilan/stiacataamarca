@@ -1,0 +1,192 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://code.jquery.com/jquery-3.7.0.js"
+        integrity="sha256-JlqSTELeR4TLqP0OG9dxM7yDPqX1ox/HfgiSLBj8+kM=" crossorigin="anonymous">
+    </script>
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"></script>
+    <title>STIA ORDENES</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="/static/css/style.css">
+    <link rel="shortcut icon" href="/static/media/img/logo_stia.png" type="image/x-icon">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+</head>
+
+<body>
+    <header>
+          <nav class="navbar navbar-expand-lg  bg-primary">
+                            <div class="container-fluid">
+                                <div class="logonav">
+                                    <img src="/static/media/img/logo_stia.png" alt="">
+                                </div>
+                                <a class="navbar-brand text-white" href="{% url 'landing' %}">STIA ORDENES</a>
+                                <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                                    data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                                    aria-expanded="false" aria-label="Toggle navigation">
+                                    <span class="navbar-toggler-icon"></span>
+                                </button>
+                                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                                        <!--
+                                        <li class="nav-item">
+                                            <a class="nav-link active text-white" aria-current="page" href="{% url 'landing' %}">INICIO</a>
+                                        </li>
+                                        -->
+                                        {% if request.user.is_authenticated %}
+                                        {% if not user.comercio %}
+                                        <li class="nav-item dropdown">
+                                            
+                                            <a class="nav-link dropdown-toggle text-white" role="button"
+                                                data-bs-toggle="dropdown" aria-expanded="false">
+                                                CONSULTAS
+                                            </a>
+                            
+                                            <ul class="dropdown-menu bg-primary">
+                                                <li><a class="dropdown-item text-white"
+                                                        href="{% url 'ordenes:consulta_saldo' %}">CONSULTA DE MARGEN</a>
+                                                </li>
+                                                <li><a class="dropdown-item text-white" href="{% url 'ordenes:consulta_orden' %}">CONSULTA DE ORDEN</a></li>
+                                                <li><a class="dropdown-item text-white" href="{% url 'ordenes:consulta_compras' %}">CONSULTA DE COMPRAS</a></li>
+                                                <li><a class="dropdown-item text-white" href="{% url 'ordenes:consulta_deuda_total' %}">CONSULTA DEUDA TOTAL EMPLEADO</a></li>
+                                            </ul>
+                                        </li>
+                                        {% endif %}
+                                        {% endif %}
+                                        {% if request.user.is_authenticated %}
+
+                                        <li class="nav-item">
+                            
+                                            <a class="nav-link text-white" href="{% url 'ordenes:orden_all' %}">ORDENES</a>
+                            
+                                        </li>
+                                        
+                                        {% if not user.comercio and not user.tipo_acceso == 'tipo_2' %}
+                                        <li class="nav-item dropdown">
+                            
+                                            <a class="nav-link dropdown-toggle text-white" role="button"
+                                            data-bs-toggle="dropdown" aria-expanded="false">EMPLEADOS</a>
+                                            <ul class="dropdown-menu bg-primary">
+                                                <li><a class="dropdown-item text-white" href="{% url 'ordenes:empleado_all' %}">LISTA DE EMPLEADOS</a></li>
+                                                <li><a class="dropdown-item text-white" href="{% url 'ordenes:comunicado_masivo' %}">COMUNICADO MASIVO</a></li>
+                                                
+                                            </ul>
+                            
+                                        </li>
+                                        <li class="nav-item dropdown">
+                            
+                                            <a class="nav-link dropdown-toggle text-white" role="button"
+                                            data-bs-toggle="dropdown" aria-expanded="false">COMERCIOS</a>
+                            
+                                            <ul class="dropdown-menu bg-primary">
+                                                <li><a class="dropdown-item text-white" href="{% url 'ordenes:comercio_all' %}">LISTA DE COMERCIOS</a></li>
+                                                <li><a class="dropdown-item text-white" href="{% url 'ordenes:usuarios_lista' %}">COMERCIOS ONLINE</a></li>
+                                                
+                                            </ul>
+                                        </li>
+                                        <li class="nav-item dropdown">                            
+                                            <a class="nav-link dropdown-toggle text-white" role="button"
+                                                data-bs-toggle="dropdown" aria-expanded="false">
+                                                LIQUIDACIONES
+                                            </a>
+                            
+                                            <ul class="dropdown-menu bg-primary">
+                                                <li><a class="dropdown-item text-white"
+                                                        href="{% url 'ordenes:liquidacion_art34' %}">ART.34</a>
+                                                </li>
+                                                <li><a class="dropdown-item text-white" href="{% url 'ordenes:liquidacion_comercios' %}">COMERCIO</a></li>
+                                                
+                                            </ul>
+                                        </li>
+                                        <li class="nav-item">
+                            
+                                            <a class="nav-link text-white" href="{% url 'ordenes:margen' %}"">MARGEN</a>
+                            
+                                        </li>
+                                        <li class="nav-item">
+                            
+                                            <a class="nav-link text-white" href="{% url 'ordenes:empresa_list' %}"">EMPRESAS</a>
+                            
+                                        </li>
+                                        {% endif %}
+                                        {% endif %}
+                                        <li class="nav-item">
+                                            <a class="nav-link text-white" href="{% url 'about' %}"">NOSOTROS</a>
+                                        </li>
+                                        {% if request.user.is_authenticated %}
+                                            {% if user.is_staff %}
+                                            <li class="nav-item dropdown">
+                                                <a class="nav-link dropdown-toggle text-white" role="button"
+                                                    data-bs-toggle="dropdown" aria-expanded="false">ADMIN</a>
+                                                <ul class="dropdown-menu bg-primary">
+                                                    <li class="nav-item">
+                                                        <a class="dropdown-item text-white" href="{% url 'ordenes:admin_list' %}"">USUARIOS</a>
+                                                    </li>
+                                                    <li class="nav-item">
+                                                        <a class="dropdown-item text-white" href="{% url 'ordenes:deuda_list' %}"">DEUDA</a>
+                                                    </li>
+                                                </ul>
+                                            </li>
+                                            {% endif %}
+                                        <li class="nav-item dropdown">
+                                            
+                                            <a class="nav-link dropdown-toggle text-warning" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" style="font-weight: bold">
+                                                {% if not user.comercio %}
+                                                    {{ user.username | upper }}, Bienvenido
+                                                {% else %}
+                                                    {{ user.comercio.comercio | upper }}, Bienvenido
+                                                {% endif %}
+                                            </a>
+                                            <ul class="dropdown-menu bg-primary">
+                                                <li><a class="dropdown-item text-white" href="{% url 'ordenes:password_change' %}">CAMBIO DE CONTRASEÑA</a></li>
+                                                <li><a class="dropdown-item text-white" href="{% url 'logout' %}">SALIR</a></li>
+                                            </ul>
+                                            
+                                        </li>
+                                        {% endif %}
+                                        
+                                        {% if not request.user.is_authenticated %}
+                                        <li class="nav-item">
+                                            <a class="nav-link text-white" href="{% url 'login' %}">INGRESAR</a>
+                                        </li>
+                                        {% endif %}
+                                        
+                                    </ul>
+                                </div>
+                            </div>
+        </nav>
+    </header>
+    {% if messages %}
+        {% for message in messages %}
+        <div class="alert {% if message.tags == 'error' %}alert-danger{% elif message.tags == 'success' %}alert-success{% elif message.tags == 'warning' %}alert-warning{% else %}alert-info{% endif %}" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        {% endfor %}
+    {% endif %}
+
+    {% block content %}
+    {% endblock %}
+    <footer>
+        <div class="p-3 mb-2 bg-primary text-white">
+            <h5 id="footer">By Manuel Saquilán 2023</h5>
+        </div>
+    </footer>
+    <script src="/static/js/main.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    <script>
+        window.jQuery || document.write('<script src="http://mysite.com/jquery.min.js"><\/script>')
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+</body>
+
+</html>

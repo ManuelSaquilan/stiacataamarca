@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2 class="titulo">Lista de Deudas</h2>
+<div class="label-input">
+    <a href="{% url 'ordenes:deuda_create' %}" class="btn btn-info">Agregar Nueva Deuda</a>
+</div>
+<table class="table table-primary mt-3">
+    <thead>
+        <tr>
+            <th class="text-center" scope="col">Empleado</th>
+            <th class="text-center" scope="col">Comercio</th>
+            <th class="text-center" scope="col">Importe</th>
+            <th class="text-center" scope="col">Mes</th>
+            <th class="text-center" scope="col">Año</th>
+            <th class="text-center" scope="col">Activa</th>
+            <th class="text-center" scope="col">Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for deuda in deudas %}
+        {% if deuda.activo %}
+        <tr>
+            <td class="text-center">{{ deuda.empleado.nombre }}</td>
+            <td class="text-center">{{ deuda.comercio.comercio }}</td>
+            <td class="text-center">{{ deuda.importe }}</td>
+            <td class="text-center">{{ deuda.mes }}</td>
+            <td class="text-center">{{ deuda.year }}</td>
+            {% if deuda.activo %}
+            <td class="text-center">SI</td>
+            {% else %}
+            <td class="text-center">NO</td>
+            {% endif %}
+            <td class="text-center">
+                <a href="{% url 'ordenes:deuda_update' deuda.id %}" class="btn btn-success">Editar</a>
+            </td>
+        </tr>    
+        {% else %}
+        <tr>
+        
+            <td class="fst-italic bg-secondary text-center">{{ deuda.empleado.nombre }}</td>
+            <td class="fst-italic bg-secondary text-center">{{ deuda.comercio.comercio }}</td>
+            <td class="fst-italic bg-secondary text-center">{{ deuda.importe }}</td>
+            <td class="fst-italic bg-secondary text-center">{{ deuda.mes }}</td>
+            <td class="fst-italic bg-secondary text-center">{{ deuda.year }}</td>
+            {% if deuda.activo %}
+            <td class="fst-italic bg-secondary text-center">SI</td>
+            {% else %}
+            <td class="fst-italic bg-secondary text-center">NO</td>
+            {% endif %}
+            <td class="fst-italic bg-secondary text-center">
+                <a href="{% url 'ordenes:deuda_update' deuda.id %}" class="btn btn-success">Editar</a>
+            </td>
+        </tr>
+        {% endif %}
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

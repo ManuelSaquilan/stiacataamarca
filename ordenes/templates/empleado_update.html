@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="card" style="background-color: burlywood;">
+    <div class="card-header">
+        <h4 style="text-align: center;">ACTUALIZA DATOS DEL EMPLEADO</h4>
+    </div>
+    <div class="card-body">
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+
+            <div class="label-input">
+                <p>
+                    <label for="{{ form.nombre.id_for_label }}">Apellido y Nombre Empleado:</label>
+                    <input type="text" name="{{ form.nombre.html_name }}" id="{{ form.nombre.id_for_label }}"
+                        value="{{ form.nombre.value }}" class="form-control" style="width: 400px;" required />
+
+                    <label for="{{ form.legajo.id_for_label }}">Número de Legajo:</label>
+                    <input type="number" name="{{ form.legajo.html_name }}" id="{{ form.legajo.id_for_label }}"
+                        value="{{ form.legajo.value }}" class="form-control" style="width: 200px;" required />
+
+                    <label for="{{ form.dni.id_for_label }}">Número de DNI:</label>
+                    <input type="number" name="{{ form.dni.html_name }}" id="{{ form.dni.id_for_label }}"
+                        value="{{ form.dni.value }}" class="form-control" style="width: 200px;" required />
+
+                    <label for="{{ form.correoEmpleado.id_for_label }}">Email:</label>
+                    <input type="email" name="{{ form.correoEmpleado.html_name }}" id="{{ form.correoEmpleado.id_for_label }}"
+                        value="{{ form.correoEmpleado.value }}" class="form-control" style="width: 400px;" />
+
+                    <label for="empresa">Empresa:</label>
+                    <select name="empresa" id="empresa" class="form-control" style="width: 400px;">
+                        {% for empresa in empresas %}
+                        <option value="{{ empresa.id }}" {% if empresa.id == form.instance.empresa.id %}selected{% endif %}>
+                            {{ empresa.nombre }}
+                        </option>
+                        {% endfor %}
+                    </select>
+
+                    <label for="{{ form.activo.id_for_label }}">Activo:</label>
+                    <select name="{{ form.activo.html_name }}" id="{{ form.activo.id_for_label }}" class="form-control" style="width: 50px;">
+                        <option value="True" {% if form.activo.value %}selected{% endif %}>SI</option>
+                        <option value="False" {% if not form.activo.value %}selected{% endif %}>NO</option>
+                    </select>
+                </p>
+
+                <p>
+                    <label for="{{ form.autorizado.id_for_label }}">Apellido y Nombre Autorizado:</label>
+                    <input type="text" name="{{ form.autorizado.html_name }}" id="{{ form.autorizado.id_for_label }}"
+                        value="{{ form.autorizado.value }}" class="form-control" style="width: 400px;" />
+
+                    <label for="{{ form.dniautorizado.id_for_label }}">Número de DNI Autorizado:</label>
+                    <input type="number" name="{{ form.dniautorizado.html_name }}" id="{{ form.dniautorizado.id_for_label }}"
+                        value="{{ form.dniautorizado.value }}" class="form-control" style="width: 200px;" />
+
+                    <label for="{{ form.correoAutorizado.id_for_label }}">Email de Autorizado 1:</label>
+                    <input type="email" name="{{ form.correoAutorizado.html_name }}" id="{{ form.correoAutorizado.id_for_label }}"
+                        value="{{ form.correoAutorizado.value|default_if_none:'' }}" class="form-control" style="width: 400px;" />
+                </p>
+
+                <p>
+                    <label for="{{ form.autorizado2.id_for_label }}">Apellido y Nombre Autorizado 2:</label>
+                    <input type="text" name="{{ form.autorizado2.html_name }}" id="{{ form.autorizado2.id_for_label }}"
+                        value="{{ form.autorizado2.value }}" class="form-control" style="width: 400px;" />
+
+                    <label for="{{ form.dniautorizado2.id_for_label }}">Número de DNI Autorizado 2:</label>
+                    <input type="number" name="{{ form.dniautorizado2.html_name }}" id="{{ form.dniautorizado2.id_for_label }}"
+                        value="{{ form.dniautorizado2.value }}" class="form-control" style="width: 200px;" />
+
+                    <label for="{{ form.correoAutorizado2.id_for_label }}">Email de Autorizado 2:</label>
+                    <input type="email" name="{{ form.correoAutorizado2.html_name }}" id="{{ form.correoAutorizado2.id_for_label }}"
+                        value="{{ form.correoAutorizado2.value|default_if_none:'' }}" class="form-control" style="width: 400px;" />
+                </p>
+            </div>
+
+            <div class="label-input">
+                <input type="submit" value="{{ tipo }}" class="btn btn-success" />
+            </div>
+        </form>
+
+        <div class="label-input">
+            <a href="{% url 'ordenes:empleado_all' %}" class="btn btn-danger">Volver</a>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

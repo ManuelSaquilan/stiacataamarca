@@ -1,0 +1,118 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="card" style="background-color: burlywood;">
+    <!--{% if messages %}
+    {% for message in messages %}
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        {{ message }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+    {% endfor %}
+    {% endif %}-->
+    <div class="card-header">
+        <h4 style="text-align: center;">Emitir Nueva Orden de Compra</h4>
+    </div>
+
+    <div class="card-body">
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <!--<div>{{form.as_p}}-->
+            <p>
+                <input type="text" name="empleado" maxlength="30" required="True" class="form-control"
+                    style="width:100px" value="{{ empleado }}" readonly hidden />
+            </p>
+            <table class="table table-primary">
+                <thead>
+                    <tr>
+                        <th class="text-center" scope="col">EMPLEADO</th>
+                        <th class="text-center" scope="col">LEGAJO</th>
+                        <th class="text-center" scope="col">DNI</th>
+                        <th class="text-center" scope="col">DISPONIBLE</th>
+                    </tr>
+                </thead>
+                <tr>
+                    {% for empleado in empleados %}
+                    <td class="text-center">{{ empleado.nombre }}</td>
+                    <td class="text-center">{{ empleado.legajo }}</td>
+                    <td class="text-center">{{ empleado.dni }}</td>
+                    <td class="text-center">{{ margen }}</td>
+                    {% endfor %}
+                <tr>
+            </table>
+            
+            <p>
+                <input type="text" name="comercio" maxlength="30" required="True" class="form-control"
+                    style="width:100px" value="{{ comercio }}" readonly hidden />
+
+            <table class="table table-primary">
+                <thead>
+                    <tr>
+                        <th scope="col">COMERCIO</th>
+                        <th scope="col">TITULAR</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        {% for comercio in comercios %}
+                        <td>{{ comercio.comercio }}</td>
+                        <td>{{ comercio.titular }}</td>
+                        {% endfor %}
+                    <tr>
+                </tbody>
+            </table>
+            </p>
+            <div class="label-input">
+                <p>
+                    <label for="id_compro">Persona que compra:</label>
+                    {% if codigo_verificacion %}
+                    <input type="text" name="compro" maxlength="30" required="True" class="form-control" style="width:400px"
+                        value="{{ compro }}" readonly />
+                    {% else %}
+                    <select name="compro" id="id_compro" class="form-control" style="width: 400px;" required>
+                        <option value="">---------</option>
+                        {% for lista in lista_empleados %}
+                        <option value="{{ lista.nombre }}">{{ lista.nombre }}</option>
+                        {% endfor %}
+                    </select>
+                    {% endif %}
+                </p>
+                
+                <p>
+                    <label>Importe:</label>
+                    <input type="number" name="importe" min="1" max="{{ margen }}" required="True"
+                        placeholder="Importe de la operación" class="form-control" style="width:210px " value="{{ importe }}"/>
+                </p>
+                <p>
+                    <label>Cuotas:</label>
+                    <input type="number" name="cuotas" min="1" max="18" required="True" placeholder="Cantidad de Cuotas"
+                        class="form-control" style="width:180px" value="{{ cuotas }}"/>
+                </p>
+                <p>
+                    <input type="text" name="usuario" value="{{ user.first_name }} {{ user.last_name }}" hidden/>
+                </p>
+            </div>
+            <div class="label-input">
+            {% if codigo_verificacion %}
+                <p>
+                    <label for="id_codigo">Código de verificación:</label>
+                    <input type="text" name="codigo_verificacion" maxlength="6" required class="form-control"
+                        style="width: 200px;" />
+                </p>
+            {% endif %}
+            </div>
+            <div class="label-input">
+                {% if codigo_verificacion %}
+                <input type="submit" value="Confirmar Orden" class="btn btn-success" style="height: 40px;" />
+                {% else %}
+                <input type="submit" value="Generar Código de Verificación" class="btn btn-primary" style="height: 40px;" />
+                {% endif %}
+            </div>
+            <div class="label-input">
+                <a href="{% url 'ordenes:orden_all' %}" class="btn btn-danger" style="height: 40px;">Cancelar</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+{% endblock %}

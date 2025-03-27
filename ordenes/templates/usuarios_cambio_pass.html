@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header">
+        <h2 class="text-center">Cambio de Contraseña</h2>
+    </div>
+    <form method="post">
+        {% csrf_token %}
+        <div class="label-input">
+            {{ form.as_p }}
+        </div>
+        <div class="label-input">
+            <button type="submit" class="btn btn-success">Cambiar Contraseña</button>
+        </div>
+        <div class="label-input">
+            <a href="{% url 'landing' %}" class="btn btn-danger">Cancelar</a>
+        </div>
+    </form>
+</div>
+{% endblock %}

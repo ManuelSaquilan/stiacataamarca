@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="card-body">
+  <h4 class="titulo">CONSULTA DE MARGEN</h4>
+  <form class="card-body" method="POST">
+    {% csrf_token %}
+    <div class="label-input">
+      <p>
+        <label for="id_empleado" class="titulo">Empleado:</label>
+        <input type="text" placeholder="Buscar..." list="buscar" name="margenempleado" maxlength="30" required
+          class="form-control" style="width:200px" />
+      </p>
+      <datalist id="buscar">
+        {% for empleado in empleados %}
+        <option value="{{ empleado.id }}">{{ empleado.nombre }} {{ empleado.legajo }} {{ empleado.dni }}</option>
+        {% endfor %}
+      </datalist>
+    </div>
+    <div class="label-input">
+      <input type="submit" value="Buscar" class="btn btn-success" />
+    </div>
+
+    {% if error %}
+      <div class="text-center alert alert-danger alert-dismissible fade show" role="alert">
+        Ups {{ user.username | upper }} !! {{ msjerror }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+    {% endif %}
+    <div class="container mt-5">
+  
+      {% if empleado %}
+      <div class="mb-3">
+          <p class="titulo"><strong>Nombre:</strong> {{ empleado.nombre }}</p>
+          <p class="titulo"><strong>Legajo:</strong> {{ empleado.legajo }}</p>
+      </div>
+    
+  
+      <table class="table table-bordered table-hover">
+          <thead>
+              <tr class="table-primary">
+                  <th class="text-center">Año-Mes</th>
+                  <th class="text-center">Compras</th>
+                  <th class="text-center">Deudas</th>
+                  <th class="text-center">Límite Disponible</th>
+              </tr>
+          </thead>
+          <tbody>
+              {% for dato in datos_mensuales %}
+              <tr>
+                  <td class="text-center">{{ dato.año_mes }}</td>
+                  <td class="text-center">{{ dato.compras }}</td>
+                  <td class="text-center">{{ dato.deudas }}</td>
+                  <td class="text-center">{{ dato.limite }}</td>
+              </tr>
+              {% endfor %}
+          </tbody>
+      </table>
+  
+      <div class="label-input">
+          <a href="{% url 'ordenes:imprimir_margen' empleado.id %}" class="btn btn-primary" target="_blank">Imprimir</a>
+      </div>
+  </div>
+  {% endif %}
+  </form>
+</div>
+
+{% endblock %}

@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+{% block content %}
+
+
+<div class="card-body">
+  <h4 class="titulo">LIQUIDACION A COMERCIOS POR PERIODO</h4>
+  <form class="card-body" method="POST">
+    {% csrf_token %}
+    <div class="label-input">
+      <p>
+        <label class="titulo">Año:</label>
+        <select class="form-select" name="periodoyearcomercio" id="">
+          {% for year in years %}
+          <option value="{{ year }}">{{ year }}</option>
+          {% endfor %}
+        </select>
+      </p>
+      <p>
+        <label class="titulo">Mes:</label>
+        <select class="form-select" name="periodomonthcomercio" id="">
+          <option value="01">Enero</option>
+          <option value="02">Febrero</option>
+          <option value="03">Marzo</option>
+          <option value="04">Abril</option>
+          <option value="05">Mayo</option>
+          <option value="06">Junio</option>
+          <option value="07">Julio</option>
+          <option value="08">Agosto</option>
+          <option value="09">Septiembre</option>
+          <option value="10">Octubre</option>
+          <option value="11">Noviembre</option>
+          <option value="12">Diciembre</option>
+          
+        </select>
+      </p>
+    </div>
+    <div class="label-input">
+      <input type="submit" value="Buscar" class="btn btn-success" />
+    </div>
+  </form>
+  <form class="card-body" method="GET" action="{% url 'ordenes:liquidacion_comercios' %}" target="_blank">
+    <div class="label-input">
+      <p>
+        {% if periodo %}
+        <label class="titulo">PERIODO : <b>{{ periodo }}</b></label>
+        <input name="periodocomercio" value="{{ periodo }}" style="visibility:hidden;">
+        <label class="titulo">TOTAL A PAGAR : <b>$ {{ total_a_pagar_general|floatformat:2 }}</b></label>
+        <input type="submit" value="Imprime" class="btn btn-success" style="margin-left: 20px;"/>
+        {% endif %}
+      </p>
+    </div>
+  </form>
+  {% if liquidacion %}
+  <table class="table table-primary text-center">
+      <thead>
+          <tr>
+              <th class="text-center" scope="col">COMERCIO</th>
+              <th class="text-center" scope="col">TOTAL</th>
+              <th class="text-center" scope="col">STIA</th>
+              <th class="text-center" scope="col">TOTAL A PAGAR</th>
+          </tr>
+      </thead>
+      <tbody>
+          {% for comercio, datos in liquidacion.items %}
+          <tr>
+              <td class="text-center">{{ comercio.comercio }}</td>
+              <td class="text-center">$ {{ datos.importe|floatformat:2 }}</td>
+              <td class="text-center">$ {{ datos.descuento|floatformat:2 }}</td>
+              <td class="text-center">$ {{ datos.total_a_pagar|floatformat:2 }}</td>
+          </tr>
+          {% endfor %}
+      </tbody>
+  </table>
+  {% endif %}
+
+  
+
+</div>
+
+
+{% endblock %}

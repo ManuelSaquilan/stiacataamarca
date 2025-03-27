@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="card" style="background-color: burlywood;">
+    <div class="card-header">
+        <h4 style="text-align: center;">EDITA DEUDA</h4>
+    </div>
+    <form method="post">
+        {% csrf_token %}
+        
+        <div class="label-input" ">
+            <p>
+                <label for="id_empleado">Empleado:</label>
+                <input type="text" required name="empleado" class="form-control text-center" id="id_empleado"
+                        style="width:250px" value="{{ deuda.empleado.nombre }}" disabled style="background-color: grey;"/>
+            </p>
+            
+            <p>
+                <label for="id_comercio">Comercio:</label>
+                <input type="text" required name="comercio" class="form-control text-center" id="id_comercio"
+                    style="width:250px" value="{{ deuda.comercio.comercio }}" disabled style="background-color: grey;"/>
+            </p>
+            <p>
+                <label for="id_year">Año:</label>
+                <input type="text" required name="year" class="form-control text-center" id="id_year"
+                    style="width:100px" value="{{ deuda.year }}" disabled style="background-color: grey;"/>
+            </p>
+            <p>
+                <label for="id_mes">Mes:</label>
+                <input type="text" required name="mes" class="form-control text-center" id="id_mes"
+                    style="width:100px" value="{{ deuda.mes }}" disabled style="background-color: grey;"/>
+            </p>
+            <p>
+                <label for="id_importe">Importe:</label>
+                <input type="text"  value="{{ deuda.importe }}" name="importe" id="id_importe" class="form-control" style="width: 200px;" required>
+            </p>
+            <p>
+                <label for="id_activo">Activo:</label>
+                <select name="activo" id="id_activo" class="form-control  text-center">
+                    {% if deuda.activo %}
+                    <option value="True" selected >SI</option>
+                    <option value="False" >NO</option>
+                    {% else %}
+                    <option value="True" >SI</option>
+                    <option value="False" selected >NO</option>
+                    {% endif %}
+                </select>
+            </p>
+        </div>
+        <div class="label-input">
+            <button type="submit" class="btn btn-success">Guardar</button>
+        </div>
+    </form>
+    <div class="label-input">
+        <a href="{% url 'ordenes:deuda_list' %}" class="btn btn-danger">Volver a la lista</a>
+    </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,94 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="card" style="background-color: burlywood;">
+    <div class="card-header">
+        <h4 style="text-align: center;">AGREGA EMPLEADO</h4>
+    </div>
+    {% if error1 %}
+    <div class="text-center alert alert-danger alert-dismissible fade show" role="alert">
+        Ups {{ user.username | upper }} !! El DNI ingresado ya existe en la base de datos
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    {% endif %}
+    {% if error2 %}
+    <div class="text-center alert alert-danger alert-dismissible fade show" role="alert">
+        Ups {{ user.username | upper }} !! El Legajo ingresado ya existe en la base de datos
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    {% endif %}
+    <div class="card-body">
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <!--<div>{{form.as_p}}-->
+            <div class="label-input">
+
+                <p>
+                    <label for="id_nombre">Apellido y Nombre Empleado:</label>
+                    <input type="text" name="nombre" maxlength="30" required="True" id="id_nombre"
+                        value="{{ empleado.nombre }}" class="form-control" style="width: 400px;" />
+
+                    <label for="id_legajo">Número de Legajo:</label>
+                    <input type="number" name="legajo" required="True" id="id_legajo" value="{{ empleado.legajo }}"
+                        class="form-control" style="width: 200px;" />
+
+                    <label for="id_dni">Número de DNI:</label>
+                    <input type="number" name="dni" required="True" id="id_dni" value="{{ empleado.dni }}"
+                        class="form-control" style="width: 200px;" />
+
+                    <label for="id_email">Email:</label>
+                    <input type="email" name="email" id="id_email" value="{{ empleado.email }}" class="form-control"
+                        style="width: 400px;" />
+                    <label for="id_empresa">Empresa</label>
+                    <select name="empresa" id="id_empresa" class="form-control" style="width: 400px;">
+                        {% for empresa in empresas %}
+                        <option value="{{ empresa.id }}" {% if empresa.id == empleado.empresa.id %} selected {% endif %}>
+                            {{ empresa.nombre }}</option>
+                        {% endfor %}
+                    </select>
+                </p>
+                <p>
+                    <label for="id_autorizado">Apellido y Nombre Autorizado 1:</label>
+                    <input type="text" name="autorizado" id="id_autorizado" value="{{ empleado.autorizado }}"
+                        class="form-control" style="width: 400px;" />
+                    <label for="id_dniautorizado">Número de DNI Autorizado 1:</label>
+                    <input type="number" name="dniautorizado" id="id_dniautorizado" value="{{ empleado.dniautorizado }}"
+                        class="form-control" style="width: 200px;" blank="True" />
+                    <label for="id_emailautorizado">Email de Autorizado 1:</label>
+                    <input type="email" name="emailautorizado" id="id_emailautorizado"
+                        value="{{ empleado.emailautorizado }}" class="form-control" style="width: 400px;"
+                        blank="True" />
+                </p>
+                <p>
+                    <label for="id_autorizado2">Apellido y Nombre Autorizado 2:</label>
+                    <input type="text" name="autorizado" id="id_autorizado2" value="{{ empleado.autorizado2 }}"
+                        class="form-control" style="width: 400px;" />
+                    <label for="id_dniautorizado2">Número de DNI Autorizado 2:</label>
+                    <input type="number" name="dniautorizado2" id="id_dniautorizado2"
+                        value="{{ empleado.dniautorizado2 }}" class="form-control" style="width: 200px;" blank="True" />
+                    <label for="id_emailautorizado2">Email de Autorizado 2:</label>
+                    <input type="email" name="emailautorizado2" id="id_emailautorizado2"
+                        value="{{ empleado.emailautorizado2 }}" class="form-control" style="width: 400px;"
+                        blank="True" />
+                </p>
+            </div>
+            <div class="label-input">
+                <label for="id_activo">Activo:</label>
+                <select name="activo" id="id_activo" class="form-control" style="width: 50px;">
+                    <option value="True" selected>SI</option>
+                    <option value="False">NO</option>
+                </select>
+            </div>
+            <div class="label-input">
+                <input type="submit" value="{{ tipo }}" class="btn btn-success" />
+            </div>
+        </form>
+        <div class="label-input">
+            <a href="{% url 'ordenes:empleado_all' %}" class="btn btn-danger">Volver</a>
+        </div>
+    </div>
+    <div class="card-footer text-muted">
+
+    </div>
+</div>
+{% endblock %}

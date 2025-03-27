@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2 class="titulo">Enviar Correo a {{ empleado.nombre }}</h2>
+    <form method="post">
+        {% csrf_token %}
+        <div class="mb-3">
+            <label for="asunto" class="titulo">Asunto:</label>
+            <input type="text" name="asunto" id="asunto" class="form-control" placeholder="Ingrese el asunto" required>
+        </div>
+        <div class="mb-3">
+            <label for="cuerpo" class="titulo">Cuerpo del Correo:</label>
+            <textarea name="cuerpo" id="cuerpo" class="form-control" rows="5" placeholder="Ingrese el mensaje" required></textarea>
+        </div>
+        <div class="label-input">
+            <button type="submit" class="btn btn-success">Enviar Correo</button>
+        </div>
+        <div class="label-input">
+            <a href="{% url 'ordenes:empleado_all' %}" class="btn btn-danger">Cancelar</a>
+        </div>
+    </form>
+</div>
+{% endblock %}

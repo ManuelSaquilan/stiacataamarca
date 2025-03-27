@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="card">
+    <div class="card-header">
+        <h4  style="text-align: center;">EDITAR MARGEN GENERAL</h4>
+    </div>
+    <div class="card-body">
+
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <!--<div>{{form.as_p}}-->
+            <div class="label-input" style="text-align: center">
+                <p>
+                    <label for="id_margen">Margen General:</label>
+                    <input type="text" name="margen" maxlength="30" required="True" id="id_margen"
+                        value="{{ margen.margen }}" class="form-control" style="width: 400px;text-align: center"/>
+                </p>
+            </div>
+            {% if error %}
+                <div class="text-center alert alert-danger alert-dismissible fade show" role="alert">
+                    Ups {{ user.username | upper }}  !! {{ error }} {{ margen.margen }} {{ margen }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            {% endif %}
+            <div class="label-input">
+                <input type="submit" value="{{ tipo }}" class="btn btn-success" />
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

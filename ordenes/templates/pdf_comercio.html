@@ -1,0 +1,45 @@
+
+{% extends "base_art34.html" %}
+
+{% block content %}
+<div style="text-align: center; width: 21cm; height: 29cm;">
+<br>     
+<p class="titulo">SINDICATO DE TRABAJADORES</p>
+<p class="titulo">DE INDUSTRIAS DE LA ALIMENTACIÓN</p>
+<p class="titulo">CATAMARCA</p>
+<p>VICARIO SEGURA N° 1338 - 4700 CATAMARCA tel. (0383)4450330<br>
+______________________________________________________</p>
+
+<div class="label-input">
+      <p>
+        {% if periodo %}
+        <label style="margin-right: 30px;">PERIODO : <b>{{ periodo }}</b></label>
+        <label>TOTAL A PAGAR: <b>{{ total_a_pagar_general|floatformat:2 }}</b></label>
+        {% endif %}
+      </p>
+    </div>
+    {% if liquidacion %}
+    <table class="table table-primary text-center">
+      <thead>
+        <tr>
+          <th scope="col">COMERCIO</th>
+          <th scope="col">IMPORTE</th>
+          <th scope="col">DESCUENTO</th>
+          <th scope="col">TOTAL A PAGARr</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for comercio, datos in liquidacion.items %}
+        <tr>
+            <td>{{ comercio.comercio }}</td>
+            <td>${{ datos.importe|floatformat:2 }}</td>
+            <td>${{ datos.descuento|floatformat:2 }}</td>
+            <td>${{ datos.total_a_pagar|floatformat:2 }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    {% endif %}
+    
+  </div>
+{% endblock %}

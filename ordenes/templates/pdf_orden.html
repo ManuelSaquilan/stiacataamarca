@@ -1,0 +1,46 @@
+
+{% extends "base_impresion.html" %}
+
+{% block content %}
+<div style="text-align: center; width: 9cm; height: 14.5cm;">
+    <br>     
+    <p class="titulo">SINDICATO DE TRABAJADORES</p>
+    <p class="titulo">DE INDUSTRIAS DE LA ALIMENTACIÓN</p>
+    <p class="titulo">CATAMARCA</p>
+    <p class="direccion">VICARIO SEGURA N° 1338 - 4700 CATAMARCA tel. (0383)4450330<br>
+    ______________________________________________________</p>
+    <p>ORDEN: <b>{{id}}</b></p>   
+    <p class="cuerpo">COMERCIO:  {{comercio}}</P><br>
+    <p class="cuerpo">EMPLEADO: <b>{{empleado}}</b> - DNI: {{dni}}</P><br>
+    <p class="cuerpo">COMPRÓ: <b>{{compro}}</b></P><br>
+    <p class="cuerpo">IMPORTE: <b>$ {{importe}}</b></P><br>
+    <p class="cuerpo">{{cuotas}} cuotas de $ {{valorcuota}}</P><br>
+    <p class="cuerpo">FECHA:  {{fecha}}</P><br>
+    VALIDO mes {{ mes }} de {{ year }}</P>
+    <p class="legales"><b> "DOY CONFORMIDAD PARA LA RETENCION</b><br>
+    <b>EN MI SALARIO CONFORME AL ART. 34 CCT 244/94"</b></p>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <P>-----------------------------------</P>
+    <P>FIRMA DEL AFILIADO</P>
+    <br>
+    <br>
+    {% if not activa %}
+    <p class="titulo">ORDEN ANULADA</p>
+    {% else %}
+    <br>
+    <br>
+    {% endif %}
+    <br>
+    <br>
+    <P>-----------------------------------</P>
+    <P>FIRMA Y SELLO DE STIA</P>
+    <!--<p class="pie">STIA</p>-->
+    <p class="validez"><b>IMPORTANTE ORDEN VÁLIDA</b><br>
+    <b>ÚNICAMENTE CON DNI DEL TITULAR</b></p>
+</div>
+
+{% endblock %}

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Consulta de Margen</title>
+</head>
+<body>
+    <div style="text-align: center;">
+    <h1>STIA</h1>
+    <h3>SINDICATO DE TRABAJADORES</h3>
+    <h3>DE INDUSTRIAS DE LA ALIMENTACIÓN</h3>
+    <h3>CATAMARCA</h3>
+    <p>VICARIO SEGURA N° 1338 - 4700 CATAMARCA tel. (0383)4450330</p>
+    <h2>Consulta de Margen</h2>
+    </div>
+    <p><strong>Nombre:</strong> {{ empleado.nombre }}</p>
+    <p><strong>Legajo:</strong> {{ empleado.legajo }}</p>
+    <p><strong>Total Margen:</strong> {{ margen_total }}</p>
+
+    <table border="1" style="width: 100%; border-collapse: collapse;">
+        <thead>
+            <tr>
+                <th>Año-Mes</th>
+                <th>Compras</th>
+                <th>Deudas</th>
+                <th>Límite Disponible</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for dato in datos_mensuales %}
+            <tr>
+                <td>{{ dato.año_mes }}</td>
+                <td>{{ dato.compras }}</td>
+                <td>{{ dato.deudas }}</td>
+                <td>{{ dato.limite }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>

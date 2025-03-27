@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Consulta de Compras</title>
+</head>
+<body>
+    <div style="text-align: center;">
+        <h1>STIA</h1>
+        <h3>SINDICATO DE TRABAJADORES</h3>
+        <h3>DE INDUSTRIAS DE LA ALIMENTACIÓN</h3>
+        <h3>CATAMARCA</h3>
+        <p>VICARIO SEGURA N° 1338 - 4700 CATAMARCA tel. (0383)4450330</p>
+        <h2>Consulta de Compras</h2>
+    </div>
+    <p><strong>Nombre:</strong> {{ empleado.nombre }}</p>
+    <p><strong>Legajo:</strong> {{ empleado.legajo }}</p>
+    <p><strong>Rango de Fechas:</strong> {{ fecha1 }} - {{ fecha2 }}</p>
+
+    <table border="1" style="width: 100%; border-collapse: collapse;">
+        <thead>
+            <tr>
+                <th style="text-align: center;">Compro</th>
+                <th style="text-align: center;">Fecha</th>
+                <th style="text-align: center;">Importe</th>
+                <th style="text-align: center;">Cuotas</th>
+                <th style="text-align: center;">Comercio</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for orden in ordenes %}
+            <tr>
+                <td style="text-align: center;">{{ orden.compro }}</td>
+                <td style="text-align: center;">{{ orden.fecha }}</td>
+                <td style="text-align: center;">{{ orden.importe }}</td>
+                <td style="text-align: center;">{{ orden.cuotas }}</td>
+                <td style="text-align: center;">{{ orden.comercio.comercio }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>

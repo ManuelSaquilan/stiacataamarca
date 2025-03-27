@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% block content %}
+
+
+<div class="<div class="table-responsive">
+    <h4  class="titulo">COMERCIOS</h4>
+    <div class="label-input"> 
+        <a href="{% url 'ordenes:comercio_create' %}" class="btn btn-info">Crear Nuevo Comercio</a>    
+    </div>
+    <table class="table table-primary">
+        <thead>
+            <tr>
+                <th scope="col">ID</th>
+                <th scope="col">COMERCIO</th>
+                <th scope="col">TITULAR</th>
+                <th scope="col">ACTIVO</th>
+                <th scope="col"></th>
+            </tr>
+        </thead>
+        {% for comercio in comercio_list %}
+        <tbody>
+            <tr>
+                {% if comercio.activo %}
+                    <td scope="row">{{comercio.id}}</td>
+                    <td>{{comercio.comercio}}</td>
+                    <td>{{comercio.titular}}</td>
+                    <td>Activo</td>
+                    <td>                                
+                        <a href="{% url 'ordenes:comercio_update' comercio.id %}" class="btn btn-success">Editar</a>
+                    </td>
+                {% else %}    
+                    <td scope="row" class="fst-italic bg-secondary">{{comercio.id}}</td>
+                    <td class="fst-italic bg-secondary">{{comercio.comercio}}</td>
+                    <td class="fst-italic bg-secondary">{{comercio.titular}}</td>
+                    <td class="fst-italic bg-secondary fw-bold">Inactivo</td>
+                    <td class="fst-italic bg-secondary">                                
+                        <a href="{% url 'ordenes:comercio_update' comercio.id %}" class="btn btn-success">Editar</a>
+                    </td>
+                {% endif %}
+            <tr>
+        </tbody>
+        {% endfor %}
+    </table>
+</div>
+{% endblock %}

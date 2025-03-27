@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2 class="titulo">Editar Usuario</h2>
+
+<form method="post">
+    {% csrf_token %}
+    <div class="label-input">
+        <p>
+            <label for="id_email" class="etiqueta" >Email:</label>
+            <input class="form-control" type="email" name="email" id="id_email" value="{{ usuario.email }}" required  style="width: 300px;"></td>
+        
+            <label for="id_password" class="etiqueta" >Contraseña:</label>
+            <input class="form-control" type="password" name="password" id="id_password" placeholder="Dejar en blanco para no cambiar"></td>
+        
+            <label for="id_comercio" class="etiqueta" >Comercio:</label>
+            <input class="form-control" type="text" name="comercio" id="id_comercio" value="{{ usuario.comercio.comercio }}" disabled style="background-color: grey;"></td>
+        </p>
+    </div>
+    <div class="label-input">
+        <button type="submit" class="btn btn-success">Guardar Cambios</button>
+    </div>
+</form>
+<div class="label-input">
+    <a href="{% url 'ordenes:usuarios_lista' %}">
+        <button class="btn btn-danger">Cancelar</button>
+    </a>
+</div>
+{% endblock %}

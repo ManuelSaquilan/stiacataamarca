@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="card" style="background-color: burlywood;">
+{% if form.errors %}
+<p class="text-center">Su nombre de usuario y contraseña no coinciden. Inténtalo de nuevo.</p>
+{% endif %}
+
+{% if next %}
+{% if user.is_authenticated %}
+<p class="text-center">Su cuenta no tiene acceso a esta página. Para proceder,
+    por favor inicie sesión con una cuenta que tenga acceso.</p>
+{% else %}
+<p class="text-center">Por favor inicie sesión para ver esta página.</p>
+{% endif %}
+{% endif %}
+
+<form method="post" action="{% url 'login' %}">
+    {% csrf_token %}
+    <div class="label-input">
+        <table>
+            <tr>
+                <td>{{ form.username.label_tag }}</td>
+                <td>{{ form.username }}</td>
+            </tr>
+            <tr>
+                <td>{{ form.password.label_tag }}</td>
+                <td>{{ form.password }}</td>
+            </tr>
+        </table>
+    </div>
+    <div class="label-input">
+        <input type="submit" class="btn btn-primary" value="login">
+        <input type="hidden" name="next" value="{{ next }}">
+    </div>
+</form>
+<div class="label-input">
+    {# Assumes you setup the password_reset view in your URLconf #}
+    <div class="label-input">
+        <p><a class="btn btn-danger"   href="{% url 'password_reset' %}">Olvidó su contraseña?</a></p>
+    </div>
+</div>
+</div>
+{% endblock %}

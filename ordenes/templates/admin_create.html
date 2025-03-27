@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div class="card">
+    <div class="card-header">
+        <h4 style="text-align: center;">Registrar Usuario</h4>
+    </div>
+    <div class="card-body">
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="label-input">
+                <p>
+                    <label for="id_username">Usuario:</label>
+                    <input type="text" name="username" id="id_username" value="{{ usuario.username }}" class="form-control" style="width: 400px;" required/>
+                </p>
+                <p>
+                    <label for="id_email">Email:</label>
+                    <input type="email" name="email" id="id_email" value="{{ usuario.email }}" class="form-control" style="width: 400px;" required/>
+                </p>
+                <p>
+                    <label for="id_tipo_acceso"></label>
+                    <select name="tipo_acceso" id="id_tipo_acceso" class="form-control" style="width: 400px;" required>
+                        <option value="" disabled selected>Seleccione un tipo de acceso</option>
+                        {% for key, value in tipo_acceso_choices %}
+                        {% if key != 'tipo_3' %}
+                        <option value="{{ key }}" {% if usuario.tipo_acceso == key %}selected{% endif %}>{{ value }}</option>
+                        {% endif %}
+                        {% endfor %}
+                    </select>
+                </p>
+            </div>
+            
+            <div class="label-input" style="margin-top: 15px;">
+                <button type="submit" class="btn btn-success">Registrar</button>
+            </div>
+            <div class="label-input" style="margin-top: 15px;">
+                <a href="{% url 'ordenes:admin_list' %}" class="btn btn-danger">Cancelar</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+{% endblock %}

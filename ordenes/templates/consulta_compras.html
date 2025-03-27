@@ -1,0 +1,87 @@
+{% extends "base.html" %}
+{% block content %}
+
+
+<div class="card-body">
+  <h4 class="titulo">CONSULTA DE COMPRAS</h4>
+  <form class="card-body" method="POST">
+    {% csrf_token %}
+    <div class="label-input">
+      <p>
+        <label class="titulo">Empleado:</label>
+        <input type="text" placeholder="Buscar..." list="buscar" name="empleado" maxlength="30" required="True"
+          class="form-control" style="width:200px" />
+        <datalist id="buscar">
+          {% for empleado in empleados %}
+          <option value="{{ empleado.id }}">{{ empleado.nombre }} {{ empleado.legajo }} {{ empleado.dni }}</option>
+          {% endfor %}
+        </datalist>
+      </p>
+      <p>
+        <label class="titulo">Fecha incio:</label>
+        <input type="date" name="fecha1" class="form-control">
+      </p>
+      <p>
+        <label class="titulo">Fecha fin:</label>
+        <input type="date" name="fecha2" class="form-control">
+      </p>
+    </div>
+    <div class="label-input">
+      <input type="submit" value="Buscar" class="btn btn-success" />
+    </div>
+    {% if error %}
+      <div class="text-center alert alert-danger alert-dismissible fade show" role="alert">
+        Ups {{ user.username | upper }}  !! {{ msjerror }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+    {% endif %}
+    
+    {% if orden %}
+    <table class="table table-primary table-hover">
+      <thead>
+        <tr class="text-center">
+          <th scope="col">ORDEN</th>
+          <th scope="col">EMPLEADO</th>
+          <th scope="col">COMERCIO</th>
+          <th scope="col">IMPORTE</th>
+          <th scope="col">CUOTAS</th>
+          <th scope="col">FECHA</th>
+          <th scope="col">COMPRO</th>
+          <th scope="col">ACTIVO</th>
+          <th scope="col"></th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for orden in orden %}
+        <tr {% if not orden.activo %} class="table-danger fst-italic" {% endif %}>
+          <td class="text-center">{{ orden.id }}</td>
+          <td class="text-center">{{ orden.empleado.nombre }}</td>
+          <td class="text-center">{{ orden.comercio.comercio }}</td>
+          <td class="text-center">$ {{ orden.importe }}</td>
+          <td class="text-center">{{ orden.cuotas }} de $ {{orden.valorcuota}}</td>
+          <td class="text-center">{{ orden.fecha }}</td>
+          <td class="text-center">{{ orden.compro }}</td>
+          {% if orden.activo %}
+            <td class="text-center">Activa</td>
+          {% else %}
+            <td class="text-center fw-bold">Anulada</td>
+          {% endif %}
+          <td class="text-center"><a href="{% url 'ordenes:export_pdf' orden.id %}" class="btn btn-info" target="_blank">Imprime</a></td>
+        <tr>
+          {% endfor %}
+      </tbody>
+    </table>
+    {% endif %}
+    {% if empleado %}
+    <div class="label-input">
+        <a href="{% url 'ordenes:imprimir_compras' empleado.id fecha1 fecha2 %}" class="btn btn-primary" target="_blank">Imprimir</a>
+    </div>
+    {% endif %}
+
+
+  </form>
+
+</div>
+
+
+{% endblock %}

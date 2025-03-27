@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="card">
+    <div class="card-header">
+        <h4 style="text-align: center;">CREAR NUEVO COMERCIO</h4>
+    </div>
+    <div class="card-body">
+    
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <!--<div>{{form.as_p}}-->
+                <div class="label-input">
+                <p>
+                    <label for="id_comercio">Nombre del Comercio:</label>
+                    <input type="text" name="comercio" maxlength="30" required="True" id="id_comercio" value="{{ comercio.comercio }}"
+                    class="form-control" style="width: 400px;"/>
+                </p>
+                <p>
+                    <label for="id_titular">Titular del Comercio:</label>
+                    <input type="text" name="titular" maxlength="30" required="True" id="id_titular" value="{{ comercio.titular }}"
+                    class="form-control" style="width: 400px;"/>
+                </p>
+            </div>
+            <div class="label-input">
+                <input type="submit" value="{{ tipo }}" class="btn btn-success" />
+            </div>
+            </form>
+            <div class="label-input">
+                <a href="{% url 'ordenes:comercio_all' %}" class="btn btn-danger">Volver</a>
+            </div>
+    </div>
+    <div class="card-footer text-muted">
+
+    </div>
+</div>
+{% endblock %}

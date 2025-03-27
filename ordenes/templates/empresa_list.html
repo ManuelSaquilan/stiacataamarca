@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div class="container">
+    <h1 class="titulo">Lista de Empresas</h1>
+    <div class="label-input">
+        <a href="{% url 'ordenes:empresa_create' %}" class="btn btn-primary">Crear Nueva Empresa</a>
+    </div>
+    <table class="table table-hover">
+        <thead>
+            <tr class="table-primary">
+                <th class="text-center">Nombre</th>
+                <th class="text-center">Dirección</th>
+                <th class="text-center">Teléfono</th>
+                <th class="text-center">Activo</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for empresa in empresas %}
+            <tr>
+                <td class="text-center">{{ empresa.nombre }}</td>
+                <td class="text-center">{{ empresa.direccion }}</td>
+                <td class="text-center">{{ empresa.telefono }}</td>
+                <td class="text-center">{{ empresa.activo|yesno:"Sí,No" }}</td>
+                <td>
+                    <a href="{% url 'ordenes:empresa_update' empresa.id %}" class="btn btn-success">
+                      Editar
+                    </a>
+                </tr>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

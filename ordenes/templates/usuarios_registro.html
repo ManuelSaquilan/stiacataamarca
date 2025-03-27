@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div class="card">
+    <div class="card-header">
+        <h4 style="text-align: center;">Registrar Usuario</h4>
+    </div>
+    <div class="card-body">
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="label-input">
+                <p>
+                    <label for="id_email">Email:</label>
+                    <input type="email" name="email" id="id_email" value="{{ usuario.email }}" class="form-control" style="width: 400px;" required/>
+                </p>
+                <p>
+                    <label for="id_comercio">Comercio:</label>
+                    <select name="comercio" id="id_comercio" class="form-control" style="width: 400px;" required>
+                        <option value="">---------</option>
+                        {% for comercio in comercios %}
+                        {% if comercio.activo %}
+                        <option value="{{ comercio.id }}" {% if comercio.id == usuario.comercio.id %} selected {% endif %}>{{ comercio.comercio }}</option>
+                        {% endif %}
+                        {% endfor %}
+                    </select>
+                </p>
+            </div>
+            
+            <div class="label-input" style="margin-top: 15px;">
+                <button type="submit" class="btn btn-success">Registrar</button>
+            </div>
+            <div class="label-input" style="margin-top: 15px;">
+                <a href="{% url 'ordenes:usuarios_lista' %}" class="btn btn-danger">Cancelar</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+{% endblock %}

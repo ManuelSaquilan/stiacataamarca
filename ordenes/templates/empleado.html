@@ -1,0 +1,166 @@
+{% extends "base.html" %}
+{% block content %}
+
+
+
+<div class="card-body">
+  <h4 class="titulo">EMPLEADOS</h4>
+  <form method="POST">
+    {% csrf_token %}
+    <div class="label-input">
+      <p>
+        <input type="text" placeholder="Buscar..." list="buscar" name="updateempleado" maxlength="30" required
+          class="form-control" style="width:100px" />
+        <datalist id="buscar">
+          {% for emp in empleado_list %}
+          <option value="{{ emp.id }}">{{ emp.nombre }} {{ emp.legajo }} {{ emp.dni }}</option>
+          {% endfor %}
+        </datalist>
+      </p>
+    </div>
+    <div class="label-input">
+      <input type="submit" value="Buscar" class="btn btn-success" style="height: 40px;" />
+    </div>
+  </form>
+
+  {% if empleado %}
+  <table class="table table-primary mt-3">
+    <thead>
+      <tr>
+        <th scope="col">ID</th>
+        <th scope="col">NOMBRE</th>
+        <th scope="col">LEGAJO</th>
+        <th scope="col">DNI</th>
+        <th scope="col">EMAIL</th>
+        <th scope="col">EMPRESA</th>
+        <th scope="col">ACTIVO</th>
+        <th scope="col"></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr {% if not empleado.activo %} class="bg-secondary fst-italic" {% endif %}>
+        <td>{{ empleado.id }}</td>
+        <td>{{ empleado.nombre }}</td>
+        <td>{{ empleado.legajo }}</td>
+        <td>{{ empleado.dni }}</td>
+        <td>{{ empleado.correoEmpleado }}</td>
+        <td>{{ empleado.empresa }}</td>
+        <td>{% if empleado.activo %}Activo{% else %}<span class="fw-bold">Inactivo</span>{% endif %}</td>
+        <td>
+          <a href="{% url 'ordenes:empleado_email' empleado.id %}" class="btn btn-primary" title="Enviar Mail">
+            <i class="bi bi-envelope"></i>
+          </a>
+          <a href="{% url 'ordenes:empleado_update' empleado.id %}" class="btn btn-success" title="Editar">
+            <i class="bi bi-pencil"></i>
+          </a>
+        </td>
+      </tr>
+      <!-- Segunda tabla dentro del empleado -->
+      <tr class="text-center">
+        <td colspan="8">
+          <div class="table-responsive">
+            <table class="table table-bordered table-sm">
+              <thead class="table-light">
+                <tr>
+                  <th scope="col">AUTORIZADO 1</th>
+                  <th scope="col">DNI 1</th>
+                  <th scope="col">EMAIL 1</th>
+                  <th scope="col">AUTORIZADO 2</th>
+                  <th scope="col">DNI 2</th>
+                  <th scope="col">EMAIL 2</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>{{ empleado.autorizado|default:"-" }}</td>
+                  <td>{{ empleado.dniautorizado|default:"-" }}</td>
+                  <td>{{ empleado.emailAutorizado|default:"-" }}</td>
+                  <td>{{ empleado.autorizado2|default:"-" }}</td>
+                  <td>{{ empleado.dniautorizado2|default:"-" }}</td>
+                  <td>{{ empleado.emailAutorizado2|default:"-" }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  {% else %}
+  <p class="text-center text-danger mt-3">No se encontró ningún empleado.</p>
+  {% endif %}
+</div>
+
+<div class="card" style="background-color: burlywood;">
+  
+  <div class="label-input">
+    <a href="{% url 'ordenes:empleado_create' %}" class="btn btn-info">Agregar Nuevo Empleado</a>
+  </div>
+
+  <table class="table table-primary">
+    <thead>
+      <tr>
+        <th scope="col">ID</th>
+        <th scope="col">NOMBRE</th>
+        <th scope="col">LEGAJO</th>
+        <th scope="col">DNI</th>
+        <th scope="col">EMAIL</th>
+        <th scope="col">EMPRESA</th>
+        <th scope="col">ACTIVO</th>
+        <th scope="col">ACCIONES</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for empleado in empleado_list %}
+      <tr class="{% if not empleado.activo %}table-secondary fst-italic{% endif %}">
+        <td>{{ empleado.id }}</td>
+        <td>{{ empleado.nombre }}</td>
+        <td>{{ empleado.legajo }}</td>
+        <td>{{ empleado.dni }}</td>
+        <td>{{ empleado.correoEmpleado }}</td>
+        <td>{{ empleado.empresa }}</td>
+        <td>{% if empleado.activo %}Activo{% else %}<span class="fw-bold">Inactivo</span>{% endif %}</td>
+        <td>
+          <a href="{% url 'ordenes:empleado_email' empleado.id %}" class="btn btn-primary" title="Enviar Mail">
+            <i class="bi bi-envelope"></i>
+          </a>
+          <a href="{% url 'ordenes:empleado_update' empleado.id %}" class="btn btn-success" title="Editar">
+            <i class="bi bi-pencil"></i>
+          </a>
+        </td>
+      </tr>
+      <!-- Segunda tabla dentro de cada empleado -->
+      <tr class="{% if not empleado.activo %}table-secondary fst-italic{% endif %}">
+        <td colspan="8">
+          <div class="table-responsive">
+            <table class="table table-bordered table-sm">
+              <thead class="table-light">
+                <tr class="{% if not empleado.activo %}table-secondary fst-italic{% endif %}">
+                  <th class="text-center" scope="col">AUTORIZADO 1</th>
+                  <th class="text-center" scope="col">DNI 1</th>
+                  <th class="text-center" scope="col">EMAIL 1</th>
+                  <th class="text-center" scope="col">AUTORIZADO 2</th>
+                  <th class="text-center" scope="col">DNI 2</th>
+                  <th class="text-center" scope="col">EMAIL 2</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="text-center">{{ empleado.autorizado|default:"-" }}</td>
+                  <td class="text-center">{{ empleado.dniautorizado|default:"-" }}</td>
+                  <td class="text-center">{{ empleado.correoAutorizado|default:"-" }}</td>
+                  <td class="text-center">{{ empleado.autorizado2|default:"-" }}</td>
+                  <td class="text-center">{{ empleado.dniautorizado2|default:"-" }}</td>
+                  <td class="text-center">{{ empleado.correoAutorizado2|default:"-" }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+{% endblock %}

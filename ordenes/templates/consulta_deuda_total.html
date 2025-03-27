@@ -1,0 +1,96 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="card-body">
+    <h4 class="titulo">Consulta de Deuda Total por Empleado</h4>
+    <form method="POST" class="card-body">
+        {% csrf_token %}
+        <div class="label-input">
+            <label class="titulo" for="empleado">Empleado:</label>
+            <select name="empleado" id="empleado" class="form-select" style="width: 400px;">
+                <option value="">Seleccione un empleado</option>
+                {% for emp in empleados %}
+                <option value="{{ emp.id }}" {% if empleado and emp.id == empleado.id %}selected{% endif %}>
+                    {{ emp.nombre }} - {{ emp.legajo }}
+                </option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="label-input" style="margin-top: 10px;">
+            <button type="submit" class="btn btn-success">Consultar</button>
+        </div>
+    </form>
+
+    {% if empleado %}
+    <h5 class="titulo">Resultados para: {{ empleado.nombre }}</h5>
+
+    <h6 class="titulo">Órdenes Activas</h6>
+    <table class="table table-bordered table-sm">
+        <thead class="table-primary">
+            <tr class="text-center">
+                <th>Fecha</th>
+                <th>Importe</th>
+                <th>Cuotas</th>
+                <th>Valor Cuota</th>
+                <th>Cuotas Restantes</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for orden in ordenes %}
+            <tr class="text-center">
+                <td>{{ orden.fecha }}</td>
+                <td>${{ orden.importe|floatformat:2 }}</td>
+                <td>{{ orden.cuotas }}</td>
+                <td>${{ orden.importe|floatformat:2 }}/{{ orden.cuotas }}</td>
+                <td>{{ orden.cuotas }}</td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="5" class="text-center">No hay órdenes activas.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <h6>Deudas Registradas</h6>
+    <table class="table table-bordered table-sm">
+        <thead class="table-primary">
+            <tr class="text-center">
+                <th>Año</th>
+                <th>Mes</th>
+                <th>Importe</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for deuda in deudas %}
+            <tr class="text-center">
+                <td>{{ deuda.year }}</td>
+                <td>{{ deuda.mes }}</td>
+                <td>${{ deuda.importe|floatformat:2 }}</td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="3" class="text-center">No hay deudas registradas.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <h5 class="titulo">Deuda Total: ${{ deuda_total|floatformat:2 }}</h5>
+    <form method="GET" action="{% url 'ordenes:consulta_deuda_pdf' %}" target="_blank">
+        <div class="label-input">
+            <input type="hidden" name="empleado_id" value="{{ empleado.id }}">
+            <button type="submit" class="btn btn-primary">Imprimir</button>
+        </div>
+    </form>
+    {% endif %}
+</div>
+<script>
+    $(document).ready(function() {
+        $('#empleado').select2({
+            placeholder: "Buscar por legajo o nombre",
+            allowClear: true
+        });
+    });
+</script>
+{% endblock %}

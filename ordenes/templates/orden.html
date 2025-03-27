@@ -1,0 +1,111 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="card-body">
+  <form class="card-body" method="POST">
+    {% csrf_token %}
+    <div class="label-input">
+      <p>
+        <label class="titulo">Busca Orden</label>
+        <input type="text" placeholder="Buscar..." list="buscar" name="updateorden" maxlength="30" required="True"
+          class="form-control" style="width:100px" />
+        <datalist id="buscar">
+          {% for orden in orden_list %}
+          <option value="{{ orden.id }}"></option>
+          {% endfor %}
+        </datalist>
+      </p>
+    </div>
+    <div class="label-input">
+      <input type="submit" value="Buscar" class="btn btn-success" style="height: 40px;" />
+    </div>
+    {% if orden %}
+    <table class="table table-primary">
+      <thead>
+        <tr>
+          <th class="text-center" scope="col"></th>
+          <th class="text-center" scope="col">EMPLEADO</th>
+          <th class="text-center" scope="col">COMERCIO</th>
+          <th class="text-center" scope="col">IMPORTE</th>
+          <th class="text-center" scope="col">CUOTAS</th>
+          <th class="text-center" scope="col">FECHA</th>
+          <th class="text-center" scope="col">ACTIVO</th>
+          <th class="text-center" scope="col"></th>
+          {% if not user.comercio %}
+          <th scope="col"></th>
+          {% endif %}
+        </tr>
+      </thead>
+      <tbody>
+        <tr {% if not orden.activo %} class="table-danger fst-italic" {% endif %}>
+          {% for orden in orden %}
+          <td class="text-center">{{ orden.id }}</td>
+          <td class="text-center">{{ orden.empleado.nombre }}</td>
+          <td class="text-center">{{ orden.comercio.comercio }}</td>
+          <td class="text-center">{{ orden.importe }}</td>
+          <td class="text-center">{{orden.cuotas}} de $ {{orden.valorcuota}}</td>
+          <td class="text-center">{{orden.fecha}}</td>
+          {% if orden.activo %}
+                <td class="text-center">Activa</td>
+                {% else %}
+                <td class="text-center fw-bold">Anulada</td>
+                {% endif %}
+          <td class="text-center"><a href="{% url 'ordenes:export_pdf' orden.id %}" class="btn btn-info" target="_blank">Imprime</a></td>
+          {% if not user.comercio and not user.tipo_acceso == 'tipo_2' %}
+          <td class="text-center"><a href="{% url 'ordenes:orden_update' orden.id %}" class="btn btn-success">Editar</a></td>
+          {% endif %}
+          {% endfor %}
+        <tr>
+      </tbody>
+    </table>
+    {% endif %}
+</div>  
+
+<div class="<div class="table-responsive">
+    <h4 class="titulo">ORDENES</h4>
+    <div class="label-input">
+        <a href="{% url 'ordenes:preconsulta' %}" class="btn btn-info">Emitir Nueva Orden de Compra</a>
+    </div>
+    <table class="table table-primary">
+        <thead>
+            <tr>
+                <th class="text-center" scope="col">ORDEN</th>
+                <th class="text-center" scope="col">EMPLEADO</th>
+                <th class="text-center" scope="col">COMERCIO</th>
+                <th class="text-center" scope="col">IMPORTE</th>
+                <th class="text-center" scope="col">CUOTAS</th>
+                <th class="text-center" scope="col">FECHA</th>
+                <th class="text-center" scope="col">ACTIVA</th>
+                <th class="text-center" scope="col"></th>
+                {% if not user.comercio %}
+                <th class="text-center" scope="col"></th>
+                {% endif %}
+            </tr>
+        </thead>
+        {% for orden in orden_list %}
+        <tbody>
+          <tr {% if not orden.activo %} class="table-danger fst-italic" {% endif %}>
+                <td class="text-center">{{orden.id}}</td>
+                <td class="text-center">{{orden.empleado.nombre}}</td>
+                <td class="text-center">{{orden.comercio.comercio}}</td>
+                <td class="text-center">$ {{orden.importe}}</td>
+                <td class="text-center">{{orden.cuotas}} de $ {{orden.valorcuota}}</td>
+                <td class="text-center">{{orden.fecha}}</td>
+                {% if orden.activo %}
+                <td class="text-center">Activa</td>
+                {% else %}
+                <td class="text-center fw-bold">Anulada</td>
+                {% endif %}
+                <td class="text-center"><a href="{% url 'ordenes:export_pdf' orden.id %}" class="btn btn-info" target="_blank">Imprime</a></td>
+                {% if not user.comercio and not user.tipo_acceso == 'tipo_2' %}
+                <td class="text-center"><a href="{% url 'ordenes:orden_update' orden.id %}" class="btn btn-success">Editar</a></td>
+                {% endif %}
+            <tr>
+        </tbody>
+        {% endfor %}
+    </table>
+</div>
+
+
+      
+{% endblock %}

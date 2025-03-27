@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block content %}
+
+
+
+
+<div class="<div class="table-responsive">
+    <h4  style="text-align: center;">MARGEN GENERAL</h4>
+    <table class="table table-primary" style="text-align: center">
+        <thead >
+            <tr>
+                <th scope="col">MARGEN</th>
+                <th scope="col"></th>
+            </tr>
+        </thead>
+        {% for margen in margen_list %}
+        <tbody>
+            <tr>
+                <td>{{margen.margen}}</td>
+                <td>
+                    <a href="{% url 'ordenes:margen_update' margen.id %}" class="btn btn-success">Editar</a>
+                </td>
+            <tr>
+        </tbody>
+        {% empty %}
+        <tbody>
+            <tr>
+                <td colspan="2">No hay registros de margen disponibles.</td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <a href="{% url 'ordenes:margen_create' %}" class="btn btn-primary">Crear Registro</a>
+                </td>
+            </tr>
+        </tbody>
+        {% endfor %}
+    </table>
+</div>
+
+{% endblock %}

@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="card" style="background-color: burlywood;">
+    <div class="card-header">
+        <h4 style="text-align: center;">AGREGA DEUDA</h4>
+    </div>
+    <form method="post">
+        {% csrf_token %}
+        
+        <!--{{ form.as_p }}-->
+        
+        <div class="label-input" ">
+            <p>
+                <label for="id_empleado">Empleado:</label>
+                <select name="empleado" id="id_empleado" class="form-control" style="width: 100%;" required>
+                    <option value="">Seleccione un empleado</option>
+                    {% for empleado in empleados %}
+                    <option value="{{ empleado.id }}">{{ empleado.legajo }} - {{ empleado.nombre }}</option>
+                    {% endfor %}
+                </select>
+            </p>
+            
+            <p>
+                <label for="id_comercio">Comercio:</label>
+                <select name="comercio" id="id_comercio" class="form-control" style="width: 200px;" required>
+                    <option value="">Seleccione un comercio</option>
+                    {% for comercio in comercios %}
+                    <option value="{{ comercio.id }}">{{ comercio.comercio }}</option>
+                    {% endfor %}
+                </select>
+            </p>
+            <p>
+                <label for="id_year">Año:</label>
+                <select name="year" id="id_year" class="form-control" style="width: 200px;" required>
+                    {% for year in years %}
+                    <option value="{{ year }}">{{ year }}</option>
+                    {% endfor %}
+                </select>
+            </p>
+            <p>
+                <label for="id_mes">Mes:</label>
+                <select name="mes" id="id_mes" class="form-control" style="width: 200px;" required>
+                    {% for mes in meses %}
+                    <option value="{{ mes.0 }}">{{ mes.1 }}</option>
+                    {% endfor %}
+                </select>
+            </p>
+            <p>
+                <label for="id_importe">Importe:</label>
+                <input type="text" name="importe" id="id_importe" class="form-control" style="width: 200px;" required>
+            </p>
+        </div>
+        <div class="label-input">
+            <button type="submit" class="btn btn-success">Guardar</button>
+        </div>
+    </form>
+    <div class="label-input">
+        <a href="{% url 'ordenes:deuda_list' %}" class="btn btn-danger">Volver a la lista</a>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function() {
+        $('#id_empleado').select2({
+            placeholder: "Buscar por legajo o nombre",
+            allowClear: true
+        });
+    });
+</script>
+{% endblock %}

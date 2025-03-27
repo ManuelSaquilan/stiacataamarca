@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h2 class="titulo">Lista de Comercios habilitados para emitir ordenes</h2>
+  <div class="label-input">
+    <a href="{% url 'ordenes:usuarios_registrar' %}" class="btn btn-info">
+    Agregar Comercio</a>
+  </div>
+  <table border="1" class="table table-primary mt-3">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Comercio</th>
+        <th>Usuario</th>
+        <th>Email</th>
+        <th>Editar</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for usuario in usuarios %}
+        {% if usuario.comercio %}
+          <tr>
+            <td>{{ usuario.id }}</td>
+            <td>{{ usuario.comercio.comercio }}</td>
+            <td>{{ usuario.username }}</td>
+            <td>{{ usuario.email }}</td>
+            <td>
+              <a href="{% url 'ordenes:usuarios_editar' usuario.id %}" class="btn btn-success">
+                Editar
+              </a>
+          </tr>
+        {% endif %}
+      {% empty %}
+        <tr>
+          <td colspan="3">No hay comercios registrados.</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% endblock %}

@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2 class="titulo">Editar Usuario</h2>
+
+<form method="post">
+    {% csrf_token %}
+    <div class="label-input">
+        <p>
+            <label for="id_nombre" class="etiqueta" >Nombre:</label>
+            <input class="form-control" type="text" name="nombre" id="id_nombre" value="{{ usuario.username }}" required  style="width: 300px;"></td>
+            <label for="id_email" class="etiqueta" >Email:</label>
+            <input class="form-control" type="email" name="email" id="id_email" value="{{ usuario.email }}" required  style="width: 300px;"></td>
+        
+            <label for="id_password" class="etiqueta" >Contraseña:</label>
+            <input class="form-control" type="password" name="password" id="id_password" placeholder="Dejar en blanco para no cambiar"></td>
+            <label for="id_tipo_acceso">Tipo de Acceso:</label>
+            <select name="tipo_acceso" id="id_tipo_acceso" class="form-control" style="width: 400px;" required>
+                <option value="usuario.tipo_acceso" disabled selected>{{usuario.tipo_acceso}}</option>
+                {% for key, value in tipo_acceso_choices %}
+                {% if key != 'tipo_3' %}
+                <option value="{{ key }}" {% if usuario.tipo_acceso == key %}selected{% endif %}>{{ value }}</option>
+                {% endif %}
+                {% endfor %}
+            </select>
+        </p>
+    </div>
+    <div class="label-input">
+        <button type="submit" class="btn btn-success">Guardar Cambios</button>
+    </div>
+</form>
+<div class="label-input">
+    <a href="{% url 'ordenes:usuarios_lista' %}">
+        <button class="btn btn-danger">Cancelar</button>
+    </a>
+</div>
+{% endblock %}

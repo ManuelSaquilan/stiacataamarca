@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block content %}
+
+
+<div class="card-body">
+  <form class="card-body" method="POST">
+    {% csrf_token %}
+    <label for="id_empleado">Comercio:</label>
+    <input type="text" placeholder="Buscar..." list="buscarcomercio" name="buscarcomercio" maxlength="30" required="True"
+      class="form-control" style="width:100px" />
+    <datalist id="buscarcomercio">
+      {% for comercio in comercios %}
+      <option value="{{ comercio.id }}">{{ comercio.comercio }} {{ comercio.titular }}</option>
+      {% endfor %}
+    </datalist>
+
+    <input type="submit" value="Buscar" class="btn btn-success" />
+
+    <table class="table table-primary">
+      <thead>
+        <tr>
+          <th class="text-center" scope="col"></th>
+          <th class="text-center" scope="col">COMERCIO</th>
+          <th class="text-center" scope="col">TITULAR</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          {% for comercio in buscacomercio %}
+          <td class="text-center">{{ comercio.id }}</td>
+          <td class="text-center">{{ comercio.comercio }}</td>
+          <td class="text-center">{{ comercio.titular }}</td>
+          {% endfor %}
+        <tr>
+      </tbody>
+    </table>
+  </form>
+</div>
+{% endblock %}

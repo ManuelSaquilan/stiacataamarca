@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="card">
+    <div class="card-header">
+        <h4  style="text-align: center;">EDITAR ORDEN</h4>
+    </div>
+    <div class="card-body">
+
+        <form action="orden_updaterecord/{{ orden.id }}" method="post">
+            {% csrf_token %}
+            <!--<div>{{form.as_p}}-->
+            <div class="label-input text-center">
+                <p>
+                    <label for="id_orden">Orden:</label>
+                    <input type="text" required name="empleado" class="form-control  text-center fw-bold" id="id_empleado"
+                        style="width:80px" value="{{ orden.id }}" disabled style="background-color: grey;"/>
+                </p>
+                <p>
+                    <label for="id_empleado">Empleado:</label>
+                    <input type="text" required name="empleado" class="form-control text-center" id="id_empleado"
+                        style="width:250px" value="{{ orden.empleado.nombre }}" disabled style="background-color: grey;"/>
+                </p>
+                <p>
+                    <label for="id_comercio">Comercio:</label>
+                    <input type="text" required name="comercio" class="form-control text-center" id="id_comercio"
+                    style="width:250px" value="{{ orden.comercio.comercio }}" disabled style="background-color: grey;"/>
+                </p>
+                <p>
+                    <label for="id_importe">Importe:</label>
+                    <input type="text" required name="importe" class="form-control text-center" id="id_importe"
+                    style="width:150px" value="$ {{ orden.importe }}" disabled style="background-color: grey;"/>
+                </p>
+            </div>    
+            <div class="label-input text-center">
+                <p>
+                    <label>Cuotas:</label>
+                    <input type="number" required name="cuotas" value="{{ orden.cuotas }}"
+                        class="form-control text-center" style="width:70px" disabled style="background-color: grey;"/>
+                </p>
+                <p>
+                    <label>Valor de Cuota:</label>
+                    <input type="text" name="valorcuota" value="$ {{ orden.valorcuota }}" 
+                        class="form-control text-center" style="width:180px" disabled style="background-color: grey;"/>
+                </p>
+                <p>
+                    <label>Fecha:</label>
+                    <input type="datetime" value=" {{ orden.fecha }}" 
+                        class="form-control text-center" style="width:250px" disabled style="background-color: grey;"/>
+                </p>
+                <p>
+                    <label for="id_activo">Activo:</label>
+                    <select name="activo" id="id_activo" class="form-control  text-center">
+                        {% if orden.activo %}
+                        <option value="True" selected >SI</option>
+                        <option value="False" >NO</option>
+                        {% else %}
+                        <option value="True" >SI</option>
+                        <option value="False" selected >NO</option>
+                        {% endif %}
+                    </select>
+                </p>
+            </div>
+            
+            <div class="label-input">
+                <input type="submit" value="{{ tipo }}" class="btn btn-success" />
+            </div>
+            <div class="label-input">
+                <a href="{% url 'ordenes:orden_all' %}" class="btn btn-danger">Volver</a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
